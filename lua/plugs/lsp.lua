@@ -56,8 +56,6 @@ return {
 					"clangd",
 					"cmake",
 					"lua_ls",
-					"ts_ls",
-					"cssls",
 					-- "prettier",
 					-- "rust_alalyzer",
 					"typos_lsp",

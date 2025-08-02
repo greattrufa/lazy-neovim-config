@@ -13,7 +13,7 @@ o.completeopt = 'menuone,noinsert,noselect'  -- Autocomplete options
 o.encoding = "UTF-8" -- Don't know what this is
 o.syntax = on -- Syntax highlight by default
 o.ma = true
-o.modifiable = true
+vim.wo.relativenumber = true
 o.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
 
 -----------------------------------------------------------
@@ -22,7 +22,7 @@ o.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
 o.number = true           -- Show line number
 o.showmatch = true        -- Highlight matching parenthesis
 o.foldmethod = 'marker'   -- Enable folding (default 'foldmarker')
-o.colorcolumn = '120'      -- Line lenght marker at 80 columns
+o.colorcolumn = '120'      -- Line length marker at 120 columns
 o.splitright = true       -- Vertical split to the right
 o.splitbelow = true       -- Horizontal split to the bottom
 o.ignorecase = true       -- Ignore case letters when search
@@ -89,8 +89,6 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
    global["loaded_" .. plugin] = 1
 end
-
-
 
 vim.g.wordmotion_prefix = '<C>'  -- Use Ctrl instead of default leader
 vim.g.wordmotion_mappings = {

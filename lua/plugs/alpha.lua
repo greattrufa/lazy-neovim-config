@@ -33,13 +33,18 @@ return {
 
     dashboard.section.header.val = banner
 
+    function updateMason()
+        vim.cmd("Mason")  -- Execute the Mason command
+        vim.api.nvim_feedkeys("U", "n", false)  -- Simulate pressing 'U'
+    end
+
     -- Menu
     dashboard.section.buttons.val = {
       dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
       dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
       dashboard.button("s", "  Settings", ":e $MYVIMRC<CR>"),
       dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),
-      dashboard.button("m", "  Update Mason", ":MasonUpdate<CR>"),
+      dashboard.button("m", "  Update Mason", ":lua updateMason()<CR>"),
       dashboard.button("q", "  Quit", ":qa<CR>"),
     }
 
