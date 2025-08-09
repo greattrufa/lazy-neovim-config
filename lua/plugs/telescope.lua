@@ -1,40 +1,103 @@
 return {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    tag = "0.1.6",
-    config = function()
-        local builtin = require('telescope.builtin')
-        -- local actions = require('telescope.actions')
+  "nvim-telescope/telescope.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+  },
+  tag = "0.1.6",
+  config = function()
+    local builtin = require("telescope.builtin")
 
-        -- load extension into telescope
-        -- require('telescope').load_extension("ui-select")
-        -- require('telescope').load_extension('dap')
-        require('telescope').setup()
-          -- defaults = {
-            -- layout_strategy = "horizontal",
-           -- },
-           -- pickers = {
-           --   find_files = {
-           --     find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
-             -- },
-           -- }
-            -- extensions = {
-              -- ["ui-select"] = {
-               -- require("telescope.themes").get_dropdown {}
-             -- }
-           -- }
+    -- Make defaults local
+    local defaults = {
+      file_ignore_patterns = {
+        -- Hidden directories
+        "%.git/",
+        "%.cache/",
+        "%.local/",
+        "%.vscode/",
+        "%.xmake/",
+        -- Project directories
+        "packages/",
+        "node_modules/",
+        "build/",
+        "bin/",
+        "dist/",
+        "target/",
+        "vendor/",
+        -- Python cache
+        "__pycache__/",
+        -- Ignore Images
+        "%.png",
+        "%.jpg",
+        "%.jpeg",
+        -- Compiled files
+        "%.o$",
+        "%.so$",
+        "%.exe$",
+        "%.dll$",
+        -- Lock files
+        "yarn%.lock",
+        "package%-lock%.json",
+        -- Zip files
+        "%.zip",
+        "%.rar",
+        "%.7zip"
+      },
+      -- Keep your other settings
+      selection_caret = " ",
+      path_display = { "smart" },
+    }
 
-        -- set keymaps
-        local map = vim.keymap.set
-        local opts = { noremap = true, silent = true }
+    -- Make pickers local
+    local pickers = {
+      find_files = {
+        -- Explicitly show hidden files except ignored patterns
+        hidden = true,
+        find_command = {
+          "rg",
+          "--files",
+          "--hidden",
+          "--glob=!.git/*",
+          "--glob=!.cache/*",
+          "--glob=!.local/*",
+          "--glob=!.vscode/*",
+          "--glob=!.xmake/*",
+          "--glob=!node_modules/*",
+          "--glob=!build/*",
+          "--glob=!dist/*",
+          "--glob=!target/*",
+          "--glob=!__pycache__/*",
+          "--glob=!packages/*",
+          "--glob=!bin/*",
+          "--glob=!vendor/*",
+        },
+      },
+      live_grep = {
+        additional_args = function(opts)
+          return {
+            "--hidden",
+            "--glob=!.git/*",
+            "--glob=!.cache/*",
+            "--glob=!.local/*",
+            "--glob=!.vscode/*",
+            "--glob=!.xmake/*",
+            "--glob=!node_modules/*",
+            "--glob=!build/*",
+            "--glob=!dist/*",
+            "--glob=!target/*",
+            "--glob=!__pycache__/*",
+            "--glob=!packages/*",
+            "--glob=!bin/*",
+            "--glob=!vendor/*",
+          }
+        end,
+      },
+    }
 
-        map("n", "<C-f>", "<cmd>Telescope find_files<cr>", opts, { desc = "Fuzzy find files in cwd" })
-        map("n", "<C-g>", "<cmd>Telescope live_grep<cr>", opts, { desc = "Fuzzy find recent files" })
-        map("n", "<C-b>", "<cmd>Telescope buffers<cr>", opts, { desc = "Find string in cwd" })
-        map("n", "<leader>fs", "<cmd>Telescope git_status<cr>", opts, { desc = "Find string under cursor in cwd" })
-        map("n", "<leader>fc", "<cmd>Telescope git commits<cr>", opts, { desc = "Find todos" })
-    end,
+    -- Pass both defaults and pickers to setup
+    require("telescope").setup({
+      defaults = defaults,
+      pickers = pickers,  -- This line was missing
+    })
+  end,
 }
-

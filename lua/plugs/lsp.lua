@@ -87,19 +87,39 @@ return {
 					end,
 				})
 			end
+			vim.diagnostic.config({
+				virtual_text = false, -- Disable inline text
+				float = {
+					border = "rounded",
+					source = "always",
+					format = function(diagnostic)
+						return string.format(
+							"%s (%s) [%s]",
+							diagnostic.message,
+							diagnostic.source,
+							diagnostic.code or ""
+						)
+					end,
+				},
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+			})
 
-			-- Get the language server to recognize the `vim` global
 			lspconfig.lua_ls.setup({
 				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
 			})
+
+			-- Improved Clangd setup
 			lspconfig.clangd.setup({
 				cmd = {
 					"clangd",
 					"--background-index",
 					"--clang-tidy",
 					"--header-insertion=never",
-					"--query-driver=clang*,gcc*,gcc*,cl.exe", -- Add your compiler paths here if needed
-					"--compile-commands-dir=build", -- Point to your build directory
+					"--query-driver=clang*,gcc*,gcc*,cl.exe",
+					"--compile-commands-dir=build",
 					"--pch-storage=memory",
 					"--all-scopes-completion",
 					"--completion-style=detailed",
@@ -111,21 +131,18 @@ return {
 				},
 				filetypes = { "c", "cpp", "objc", "objcpp" },
 				root_dir = function(fname)
-					-- Prioritize finding build/compile_commands.json
 					return lspconfig.util.root_pattern(
-						"build/compile_commands.json", -- Add this pattern
 						"compile_commands.json",
-						"compile_flags.txt",
-						".clangd",
+						"build/compile_commands.json",
 						"CMakeLists.txt",
-						"xmake.lua",
-						".git"
+						"xmake.lua"
 					)(fname) or lspconfig.util.path.dirname(fname)
 				end,
 				capabilities = {
-					offsetEncoding = "utf-8", -- Must match cmd parameter
+					offsetEncoding = "utf-8",
 				},
 			})
+			-- Get the language server to recognize the `vim` global
 			lspconfig.cmake.setup({})
 			lspconfig.cssls.setup({})
 			lspconfig.gopls.setup({})
@@ -141,19 +158,6 @@ return {
 				},
 			})
 			lspconfig.terraformls.setup({})
-			-- Add this to your nvim-lspconfig config function
-			vim.diagnostic.config({
-				virtual_text = {
-					source = "always", -- Show source of diagnostic
-					prefix = "●", -- Custom prefix character
-					spacing = 4, -- Space before diagnostic message
-				},
-				signs = true, -- Show signs in gutter
-				underline = true, -- Underline problematic code
-				update_in_insert = false, -- Don't update while typing
-				severity_sort = true, -- Sort diagnostics by severity
-			})
-
 			-- Customize diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 			for type, icon in pairs(signs) do
@@ -211,6 +215,18 @@ return {
 
 					-- use telescope to search for object references
 					vim.keymap.set("n", "gi", require("telescope.builtin").lsp_references, opts)
+				end,
+			})
+
+			-- Show diagnostics on cursor hold
+			vim.api.nvim_create_autocmd("CursorHold", {
+				pattern = "*",
+				callback = function()
+					vim.diagnostic.open_float(nil, {
+						scope = "cursor",
+						focusable = false,
+						close_events = { "CursorMoved", "BufHidden", "InsertEnter" },
+					})
 				end,
 			})
 		end,

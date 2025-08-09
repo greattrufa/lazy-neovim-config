@@ -13,8 +13,9 @@ o.completeopt = 'menuone,noinsert,noselect'  -- Autocomplete options
 o.encoding = "UTF-8" -- Don't know what this is
 o.syntax = on -- Syntax highlight by default
 o.ma = true
-vim.wo.relativenumber = true
+o.relativenumber = true
 o.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
+o.shada = "!,'1000,<50,s100,h"
 
 -----------------------------------------------------------
 -- Neovim UI
@@ -37,10 +38,10 @@ o.termguicolors = true
 -- Tabs, indent
 -----------------------------------------------------------
 o.expandtab = true        -- Use spaces instead of tabs
-o.shiftwidth = 4          -- Shift 4 spaces when tab
-o.tabstop = 4             -- 1 tab == 4 spaces
+o.shiftwidth = 2          -- Shift 4 spaces when tab
+o.tabstop = 2             -- 1 tab == 4 spaces
 o.smartindent = true      -- Autoindent new lines
-o.showtabline = 2       -- Show the tapline
+o.showtabline = 2         -- Show the tapline
 
 -----------------------------------------------------------
 -- Memory, CPU
@@ -50,6 +51,8 @@ o.history = 100           -- Remember N lines in history
 o.lazyredraw = true       -- Faster scrolling
 o.synmaxcol = 240         -- Max column for syntax highlight
 o.updatetime = 250        -- ms to wait for trigger an event
+o.timeoutlen = 300  -- Time to wait for a mapped sequence
+o.ttimeoutlen = 10  -- Time to wait for key codes
 
 -----------------------------------------------------------
 -- Startup
@@ -91,10 +94,20 @@ for _, plugin in pairs(disabled_built_ins) do
 end
 
 vim.g.wordmotion_prefix = '<C>'  -- Use Ctrl instead of default leader
-vim.g.wordmotion_mappings = {
-  ['<C-Right>'] = 'w',  -- Next word
-  ['<C-Left>'] = 'b',   -- Previous word
-  ['<C-Up>'] = 'gk',    -- Up line (visual)
-  ['<C-Down>'] = 'gj',  -- Down line (visual)
-}
+
+-- Ignore files
+-- Ignore in :bnext/:bprev
+vim.opt.wildignore:append({
+  "*.o", "*.obj", "*.dll", "*.exe", "*.bin", "*.class",         -- Compiled
+  "*.pyc", "*.pyo", "__pycache__",                              -- Python
+  "*.zip", "*.tar.gz", "*.7z",                                  -- Archives
+  "*.png", "*.jpg", "*.jpeg", "*.gif", "*.svg",                 -- Images
+  "node_modules", "build", "dist", "target", "packages", "bin", -- Project dirs
+  ".git", ".svn", ".hg",                                        -- VCS
+  "*.pdf", "*.docx", "*.pptx",                                  -- Documents
+})
+
+-- Improve file completion
+vim.opt.wildmode = "longest:full,full"
+vim.opt.wildignorecase = true
 

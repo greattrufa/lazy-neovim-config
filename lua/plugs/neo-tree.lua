@@ -5,12 +5,11 @@ return {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim",
-		-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 	},
 	lazy = false,
 	config = function()
 		require("neo-tree").setup({
-      close_if_last_window = false,
+			close_if_last_window = false,
 			filesystem = {
 				filtered_items = {
 					visible = true,
@@ -28,11 +27,11 @@ return {
 				},
 			},
 		})
-    
-    local map = vim.keymap.set
+
+		local map = vim.keymap.set
 		local opts = { noremap = true, silent = true }
 
 		map("n", "<C-c>", ":Neotree toggle<CR>", opts, { desc = "Toggle the filesystem" })
 
-  end,
+	end,
 }
