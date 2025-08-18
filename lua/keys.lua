@@ -29,8 +29,8 @@ map('n', "<Space>tet", ":Tetris<CR>", opts, { desc = "Tetris" })
 map('n', "<Space>mine", ":Nvimesweeper<CR>", opts, { desc = "Minesweeper" })
 
 -- Open specific buffer
-map("n", "<Space>m", ":Mason", opts, { desc = "Toggle Mason package manager" })
-map("n", "<Space>t", ":Alpha", opts, { desc = "Toggle Alpha neovim" })
+map("n", "<Space>m", ":Mason<CR>", opts, { desc = "Toggle Mason package manager" })
+map("n", "<Space>t", ":Alpha<CR>", opts, { desc = "Toggle Alpha neovim" })
 
 -- map('i', "<C-z>", "<C-o>u", opts, { desc = "Undo" })
 

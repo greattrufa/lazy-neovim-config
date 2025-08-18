@@ -11,10 +11,8 @@ return {
 				markdown = { "prettier" },
 				lua = { "stylua" },
 				python = { "isort", "black" },
-				c = { "clang-format" },
-				cpp = { "clang-format" },
-				-- cpp = { "prettier" },
-				-- c = { "prettier" },
+				cpp = { "prettier" },
+				c = { "prettier" },
 			},
 			-- format_on_save = {
 			-- 	lsp_fallback = true,
