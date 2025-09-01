@@ -23,7 +23,7 @@ return {
 		end
 
 		local map = vim.keymap.set
-        local opts = { noremap = true, silent = true }
+		local opts = { noremap = true, silent = true }
 
 		map("n", "<Space>v", function()
 			ToggleFloatermLayout("vertical")

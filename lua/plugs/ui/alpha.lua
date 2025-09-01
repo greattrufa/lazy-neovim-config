@@ -1,6 +1,5 @@
 return {
   "goolord/alpha-nvim",
-  -- dependencies = { 'echasnovski/mini.icons' },
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local status_ok, alpha = pcall(require, "alpha")
@@ -36,7 +35,6 @@ return {
     -- Menu
     dashboard.section.buttons.val = {
       dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
-      -- dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
       dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
       dashboard.button("s", "  Settings", ":e $MYVIMRC<CR>"),
       dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),

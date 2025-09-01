@@ -1,62 +1,13 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup({
-				max_concurrent_installers = 4,
-				providers = {
-					"mason.providers.registry-api",
-					"mason.providers.client",
-				},
-				ui = {
-					check_outdated_packages_on_open = true,
-					PATH = "prepend",
-					border = "rounded",
-					backdrop = 60,
-					width = 0.8,
-					height = 0.9,
-					icons = {
-						package_installed = "✓",
-						package_pending = "➜",
-						package_uninstalled = "✗",
-					},
-				},
-				keymaps = {
-					-- Keymap to expand a package
-					toggle_package_expand = "<CR>",
-					-- Keymap to install the package under the current cursor position
-					install_package = "i",
-					-- Keymap to reinstall/update the package under the current cursor position
-					update_package = "u",
-					-- Keymap to check for new version for the package under the current cursor position
-					check_package_version = "c",
-					-- Keymap to update all installed packages
-					update_all_packages = "U",
-					-- Keymap to check which installed packages are outdated
-					check_outdated_packages = "C",
-					-- Keymap to uninstall a package
-					uninstall_package = "X",
-					-- Keymap to cancel a package installation
-					cancel_installation = "<C-c>",
-					-- Keymap to apply language filter
-					apply_language_filter = "<C-f>",
-					-- Keymap to toggle viewing package installation log
-					toggle_package_install_log = "<CR>",
-					-- Keymap to toggle the help view
-					toggle_help = "g?",
-				},
-			})
-		end,
-	},
-	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"clangd",
+					"glsl_analyzer",
 					"cmake",
 					"lua_ls",
-					-- "prettier",
 					-- "rust_alalyzer",
 					"typos_lsp",
 					"pylsp",
@@ -70,7 +21,6 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 
-			-- Fix Windows path issues
 			if vim.fn.has("win32") == 1 then
 				vim.env.PATH = vim.env.PATH .. ";" .. vim.fn.stdpath("data") .. "/mason/bin"
 
@@ -87,8 +37,9 @@ return {
 					end,
 				})
 			end
+
 			vim.diagnostic.config({
-				virtual_text = false, -- Disable inline text
+				virtual_text = true, -- Disable inline text
 				float = {
 					border = "rounded",
 					source = "always",
@@ -108,7 +59,46 @@ return {
 			})
 
 			lspconfig.lua_ls.setup({
-				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
+				root_dir = function(fname)
+					return lspconfig.util.find_git_ancestor(fname) or lspconfig.util.path.dirname(fname)
+				end,
+				settings = {
+					Lua = {
+						workspace = {
+							maxPreload = 1000, -- Reduce preloaded files
+							preloadFileSize = 500, -- Skip large files
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+								-- Add other Lua libraries here, e.g., runtime paths for plugins
+							},
+						},
+						diagnostics = {
+							globals = {
+								"vim",
+							},
+						},
+						telemetry = { enable = false },
+					},
+				},
+			})
+
+			lspconfig.dartls.setup({
+				-- cmd = { "dart.bat", "language-server", "--protocol=lsp" }, -- Ensure this matches your Dart executable path
+				-- filetypes = { "dart" },
+				-- init_options = {
+				-- 	closingLabels = true,
+				-- 	flutterOutline = true,
+				-- 	onlyAnalyzeProjectsWithOpenFiles = false,
+				-- 	outline = true,
+				-- 	suggestFromUnimportedLibraries = true,
+				-- },
+				-- settings = {
+				-- 	dart = {
+				-- 		completeFunctionCalls = true,
+				-- 		showTodos = true,
+				-- 	},
+				-- },
 			})
 
 			-- Improved Clangd setup
@@ -142,10 +132,8 @@ return {
 					offsetEncoding = "utf-8",
 				},
 			})
-			-- Get the language server to recognize the `vim` global
 			lspconfig.cmake.setup({})
-			lspconfig.cssls.setup({})
-			lspconfig.gopls.setup({})
+
 			lspconfig.pylsp.setup({
 				settings = {
 					pylsp = {
@@ -157,7 +145,9 @@ return {
 					},
 				},
 			})
+
 			lspconfig.terraformls.setup({})
+
 			-- Customize diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 			for type, icon in pairs(signs) do
@@ -167,10 +157,10 @@ return {
 
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
-			vim.keymap.set("n", "<leader>ee", vim.diagnostic.open_float)
+			vim.keymap.set("n", "<Space>ee", vim.diagnostic.open_float)
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
+			vim.keymap.set("n", "<Space>qs", vim.diagnostic.setloclist)
 
 			-- Use LspAttach autocommand to only map the following keys
 			-- after the language server attaches to the current buffer
@@ -204,14 +194,14 @@ return {
 					vim.keymap.set("n", "gf", vim.lsp.buf.hover, opts)
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-					vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-					vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-					vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+					vim.keymap.set("n", "<Space>fa", vim.lsp.buf.add_workspace_folder, opts)
+					vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
+					vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set({ "n", "v" }, "<Space>ca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
 					-- Goto definition in new window
-					vim.keymap.set("n", "<leader>wg", ":belowright split<CR>:lua vim.lsp.buf.definition()<CR>", opts)
+					vim.keymap.set("n", "<Space>wg", ":belowright split<CR>:lua vim.lsp.buf.definition()<CR>", opts)
 
 					-- use telescope to search for object references
 					vim.keymap.set("n", "gi", require("telescope.builtin").lsp_references, opts)

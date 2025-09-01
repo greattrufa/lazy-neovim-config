@@ -29,10 +29,10 @@ return {
 				-- `false` will disable the whole extension
 				enable = true,
 				additional_vim_regex_highlighting = false,
-				disable = function(_, bufnr)
-					-- Disable for large files
-					return vim.api.nvim_buf_line_count(bufnr) > 10000
-				end,
+				-- disable = function(_, bufnr)
+				-- 	-- Disable for large files
+				-- 	return vim.api.nvim_buf_line_count(bufnr) > 10000
+				-- end,
 			},
 			incremental_selection = {
 				enable = true,
