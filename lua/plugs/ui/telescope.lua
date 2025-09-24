@@ -6,6 +6,7 @@ return {
 	},
 	tag = "0.1.6",
 	config = function()
+		require("telescope").load_extension("notify")
 		require("telescope").load_extension("flutter")
 		local builtin = require("telescope.builtin")
 
@@ -15,6 +16,7 @@ return {
 				-- Hidden directories
 				"%.git/",
 				"%.cache/",
+				"%.vs/",
 				"%.local/",
 				"%.vscode/",
 				"%.xmake/",
@@ -68,6 +70,7 @@ return {
 					"--glob=!.idea/*",
 					"--glob=!.xmake/*",
 					"--glob=!.dart_tool/*",
+					"--glob=!.vs/",
 					"--glob=!node_modules/*",
 					"--glob=!build/*",
 					"--glob=!dist/*",
@@ -89,6 +92,7 @@ return {
 						"--glob=!.xmake/*",
 						"--glob=!.dart_tool/*",
 						"--glob=!.idea/*",
+						"--glob=!.vs/",
 						"--glob=!node_modules/*",
 						"--glob=!build/*",
 						"--glob=!dist/*",

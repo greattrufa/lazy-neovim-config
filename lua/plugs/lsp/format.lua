@@ -15,8 +15,8 @@ return {
 				markdown = { "prettier" },
 				lua = { "stylua" },
 				python = { "isort", "black" },
-				c = { "prettier" },
-				cpp = { "prettier" },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
 			},
 
 			format_on_save = {
@@ -35,6 +35,7 @@ return {
 		conform_mason.setup({
 			ensure_installed = {
 				"prettier",
+				"clang-format",
 				"stylua",
 				"isort",
 				"black",

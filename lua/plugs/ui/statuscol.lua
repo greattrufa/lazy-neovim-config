@@ -5,6 +5,8 @@ return {
 		-- Only basic configuration without complex conditions
 		require("statuscol").setup({
 			setopt = true,
+			ft_ignore = { "Neotree", "TelescopePrompt", "mason", "toggleterm", "floaterm", "help", "terminal" }, -- Add filetypes to ignore
+			bt_ignore = { "nofile", "prompt", "terminal" }, -- Ignore by buffer type :cite[1]
 			segments = {
 				-- Absolute numbers
 				{

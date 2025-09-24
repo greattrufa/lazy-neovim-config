@@ -5,6 +5,8 @@ return {
 		require("mason-nvim-dap").setup({
 			ensure_installed = {
 				"codelldb",
+				-- For vscode debug options compatibility
+				"cpptools",
 				"cppdbg",
 				"dart-debug-adapter",
 			},

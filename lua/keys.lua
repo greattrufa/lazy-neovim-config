@@ -53,17 +53,15 @@ map("n", "<Space>fs", "<cmd>Telescope git_status<cr>", opts, { desc = "Find stri
 map("n", "<Space>fc", "<cmd>Telescope git commits<cr>", opts, { desc = "Find todos" })
 map("n", "<Space>ft", "<cmd>Telescope flutter commands<cr>", opts, { desc = "Find todos" })
 
--- Debug UI menu
-map("n", "<C-e>", "<cmd>lua require('dapui').toggle()<cr>", opts, { desc = { "Toggle the debug UI" } })
-map("n", "<Space>do", "<cmd>lua require('dapui').open()<cr>", opts, { desc = { "Open the debug UI" } })
-map("n", "<Space>dc", "<cmd>lua require('dapui').close()<cr>", opts, { desc = { "Close the debug UI" } })
+-- Debbugins keymaps
+map("n", "<C-e>", "<cmd>lua require('dap').continue()<cr>", opts, { desc = "Continue" })
+map("n", "<Space>br", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts, { desc = "Toggle Breakpoint" })
+map("n", "<Space>ds", "<cmd>lua require('dap').disconnect()<cr>", opts, { desc = "Stop the debugging process" })
+map("n", "<Space>di", "<cmd>lua require('dap').step_into()<cr>", opts, { desc = "Step Into" })
+map("n", "<Space>do", "<cmd>lua require('dap').step_over()<cr>", opts, { desc = "Step Over" })
+map("n", "<Space>du", "<cmd>lua require('dap').step_out()<cr>", opts, { desc = "Step Out" })
 
--- Breakpoints
--- map("n", "<Space>br", "<cmd>lua require('persistent-breakpoints.api').toggle_breakpoint()<cr>", opts)
--- map("n", "<Space>bcc", "<cmd>lua require('persistent-breakpoints.api').set_conditional_breakpoint()<cr>", opts)
--- map("n", "<Space>bc", "<cmd>lua require('persistent-breakpoints.api').clear_all_breakpoints()<cr>", opts)
--- map("n", "<Space>bl", "<cmd>lua require('persistent-breakpoints.api').set_log_point()<cr>", opts)
-
+-- Similar debugging stuff
 map("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", opts)
 map("n", "<Space>br", "<cmd>lua require('dap').toggle_breakpoint()<cr>", opts)
 map("n", "<F10>", "<cnd>lua require('dap').step_over<cr>", opts)

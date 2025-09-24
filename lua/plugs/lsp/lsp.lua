@@ -19,8 +19,6 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local lspconfig = require("lspconfig")
-
 			if vim.fn.has("win32") == 1 then
 				vim.env.PATH = vim.env.PATH .. ";" .. vim.fn.stdpath("data") .. "/mason/bin"
 
@@ -58,83 +56,55 @@ return {
 				severity_sort = true,
 			})
 
-			lspconfig.lua_ls.setup({
-				root_dir = function(fname)
-					return lspconfig.util.find_git_ancestor(fname) or lspconfig.util.path.dirname(fname)
-				end,
-				settings = {
-					Lua = {
-						workspace = {
-							maxPreload = 1000, -- Reduce preloaded files
-							preloadFileSize = 500, -- Skip large files
-							checkThirdParty = false,
-							library = {
-								vim.env.VIMRUNTIME,
-								-- Add other Lua libraries here, e.g., runtime paths for plugins
-							},
-						},
-						diagnostics = {
-							globals = {
-								"vim",
-							},
-						},
-						telemetry = { enable = false },
-					},
-				},
-			})
+            vim.lsp.config("lua_ls", {
+                root_markers = { ".git", ".luarc.json", ".luarc.jsonc", ".stylua.toml" },
+                settings = {
+                    Lua = {
+                        workspace = {
+                            maxPreload = 1000, -- Reduce preloaded files
+                            preloadFileSize = 500, -- Skip large files
+                            checkThirdParty = false,
+                            library = {
+                                vim.env.VIMRUNTIME,
+                                -- Add other Lua libraries here, e.g., runtime paths for plugins
+                            },
+                        },
+                        diagnostics = {
+                            globals = {
+                                "vim",
+                            },
+                        },
+                        telemetry = { enable = false },
+                    },
+                },
+            })
 
-			lspconfig.dartls.setup({
-				-- cmd = { "dart.bat", "language-server", "--protocol=lsp" }, -- Ensure this matches your Dart executable path
-				-- filetypes = { "dart" },
-				-- init_options = {
-				-- 	closingLabels = true,
-				-- 	flutterOutline = true,
-				-- 	onlyAnalyzeProjectsWithOpenFiles = false,
-				-- 	outline = true,
-				-- 	suggestFromUnimportedLibraries = true,
-				-- },
-				-- settings = {
-				-- 	dart = {
-				-- 		completeFunctionCalls = true,
-				-- 		showTodos = true,
-				-- 	},
-				-- },
-			})
+            vim.lsp.config("clangd", {
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--header-insertion=never",
+                    "--query-driver=clang*,gcc*,gcc*,cl.exe",
+                    "--compile-commands-dir=build",
+                    "--pch-storage=memory",
+                    "--all-scopes-completion",
+                    "--completion-style=detailed",
+                    "--offset-encoding=utf-8",
+                },
+                init_options = {
+                    clangdFileStatus = true,
+                },
+                filetypes = { "c", "cpp", "objc", "objcpp" },
+                root_markers = { "compile_commands.json", "CMakeLists.txt", "xmake.lua", ".git" },
+                single_file_support = true,
+                capabilities = {
+                    offsetEncoding = { "utf-8" },
+                },
+            })
+			vim.lsp.config("cmake", {})
 
-			-- Improved Clangd setup
-			lspconfig.clangd.setup({
-				cmd = {
-					"clangd",
-					"--background-index",
-					"--clang-tidy",
-					"--header-insertion=never",
-					"--query-driver=clang*,gcc*,gcc*,cl.exe",
-					"--compile-commands-dir=build",
-					"--pch-storage=memory",
-					"--all-scopes-completion",
-					"--completion-style=detailed",
-					"--offset-encoding=utf-8",
-				},
-				init_options = {
-					clangdFileStatus = true,
-					fallbackFlags = { "-std=c++26" },
-				},
-				filetypes = { "c", "cpp", "objc", "objcpp" },
-				root_dir = function(fname)
-					return lspconfig.util.root_pattern(
-						"compile_commands.json",
-						"build/compile_commands.json",
-						"CMakeLists.txt",
-						"xmake.lua"
-					)(fname) or lspconfig.util.path.dirname(fname)
-				end,
-				capabilities = {
-					offsetEncoding = "utf-8",
-				},
-			})
-			lspconfig.cmake.setup({})
-
-			lspconfig.pylsp.setup({
+			vim.lsp.config("pylsp", {
 				settings = {
 					pylsp = {
 						plugins = {
@@ -146,7 +116,13 @@ return {
 				},
 			})
 
-			lspconfig.terraformls.setup({})
+			vim.lsp.config("terraformls", {})
+
+            vim.lsp.enable("lua_ls")
+            vim.lsp.enable("clangd")
+            vim.lsp.enable("pylsp")
+            vim.lsp.enable("cmake")
+            vim.lsp.enable("terraformls")
 
 			-- Customize diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }

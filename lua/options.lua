@@ -34,8 +34,10 @@ o.termguicolors = true -- Enable 24-bit RGB colors
 o.laststatus = 3 -- Set global statusline
 o.cursorline = true -- Sets the line cursor
 o.termguicolors = true
-vim.opt.winminwidth = 5 -- Lower than default
-vim.opt.winwidth = 10 -- Lower than default
+o.winminwidth = 1
+o.winminheight = 1
+o.winwidth = 3 -- Larger value if possible
+o.winheight = 3 -- Larger value if possible
 
 -----------------------------------------------------------
 -- Tabs, indent
