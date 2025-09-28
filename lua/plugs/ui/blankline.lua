@@ -1,5 +1,5 @@
 return {
-    -- https://github.com/lukas-reineke/indent-blankline.nvim for more styles
+	-- https://github.com/lukas-reineke/indent-blankline.nvim for more styles
 	"lukas-reineke/indent-blankline.nvim",
 	main = "ibl",
 	---@module "ibl"

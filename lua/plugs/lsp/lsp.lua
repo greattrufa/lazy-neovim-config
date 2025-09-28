@@ -8,9 +8,9 @@ return {
 					"glsl_analyzer",
 					"cmake",
 					"lua_ls",
-					-- "rust_alalyzer",
+					"rust_analyzer",
 					"typos_lsp",
-					"pylsp",
+					"pyright",
 				},
 				automatic_installation = true,
 			})
@@ -26,18 +26,15 @@ return {
 				local function normalize_path(path)
 					return path:gsub("\\", "/"):lower()
 				end
-
-				local lsp_util = require("lspconfig.util")
-				lsp_util.path = vim.tbl_extend("force", lsp_util.path, {
-					normalize = normalize_path,
-					is_absolute = function(path)
-						return path:match("^%a:") ~= nil
-					end,
-				})
 			end
 
 			vim.diagnostic.config({
-				virtual_text = true, -- Disable inline text
+				virtual_text = true, -- Enable inline text
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+
 				float = {
 					border = "rounded",
 					source = "always",
@@ -50,79 +47,85 @@ return {
 						)
 					end,
 				},
-				signs = true,
-				underline = true,
-				update_in_insert = false,
-				severity_sort = true,
 			})
 
-            vim.lsp.config("lua_ls", {
-                root_markers = { ".git", ".luarc.json", ".luarc.jsonc", ".stylua.toml" },
-                settings = {
-                    Lua = {
-                        workspace = {
-                            maxPreload = 1000, -- Reduce preloaded files
-                            preloadFileSize = 500, -- Skip large files
-                            checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME,
-                                -- Add other Lua libraries here, e.g., runtime paths for plugins
-                            },
-                        },
-                        diagnostics = {
-                            globals = {
-                                "vim",
-                            },
-                        },
-                        telemetry = { enable = false },
-                    },
-                },
-            })
+			vim.lsp.config("lua_ls", {
+				root_markers = { ".git", ".luarc.json", ".luarc.jsonc", ".stylua.toml" },
+				settings = {
+					Lua = {
+						workspace = {
+							maxPreload = 1000, -- Reduce preloaded files
+							preloadFileSize = 500, -- Skip large files
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+								-- Add other Lua libraries here, e.g., runtime paths for plugins
+							},
+						},
+						diagnostics = {
+							globals = {
+								"vim",
+							},
+						},
+						telemetry = { enable = false },
+					},
+				},
+			})
 
-            vim.lsp.config("clangd", {
-                cmd = {
-                    "clangd",
-                    "--background-index",
-                    "--clang-tidy",
-                    "--header-insertion=never",
-                    "--query-driver=clang*,gcc*,gcc*,cl.exe",
-                    "--compile-commands-dir=build",
-                    "--pch-storage=memory",
-                    "--all-scopes-completion",
-                    "--completion-style=detailed",
-                    "--offset-encoding=utf-8",
-                },
-                init_options = {
-                    clangdFileStatus = true,
-                },
-                filetypes = { "c", "cpp", "objc", "objcpp" },
-                root_markers = { "compile_commands.json", "CMakeLists.txt", "xmake.lua", ".git" },
-                single_file_support = true,
-                capabilities = {
-                    offsetEncoding = { "utf-8" },
-                },
-            })
+			vim.lsp.config("clangd", {
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=never",
+					"--query-driver=clang*,gcc*,gcc*,cl.exe",
+					"--compile-commands-dir=build",
+					"--pch-storage=memory",
+					"--all-scopes-completion",
+					"--completion-style=detailed",
+					"--offset-encoding=utf-8",
+				},
+				init_options = {
+					clangdFileStatus = true,
+				},
+				filetypes = { "c", "cpp", "objc", "objcpp" },
+				root_markers = { "compile_commands.json", "CMakeLists.txt", "xmake.lua", ".git" },
+				single_file_support = true,
+				capabilities = {
+					offsetEncoding = { "utf-8" },
+				},
+			})
 			vim.lsp.config("cmake", {})
 
-			vim.lsp.config("pylsp", {
+			vim.lsp.config("pyright", {
+				cmd = { "pyright-langserver", "--stdio" },
+				filetypes = { "python" },
+				root_markers = { ".git", "pyproject.toml", "requirements.txt", "setup.py", "main.py", ".gitignore" }, -- Updated markers
 				settings = {
-					pylsp = {
-						plugins = {
-							pycodestyle = { enabled = false },
-							pyflakes = { enabled = false },
-							pylint = { enabled = true },
+					python = {
+						analysis = {
+							typeCheckingMode = "basic", -- Controls strictness: "off", "basic", "strict"
+							diagnosticMode = "workspace", -- Crucial for speed :cite[2]:cite[5]
+							useLibraryCodeForTypes = true, -- Good for better type info on untyped libs
+							autoSearchPaths = true,
+							autoImportCompletions = true, -- Offers auto-import suggestions :cite[2]
+							-- extraPaths = {}, -- Add if you have custom module paths
 						},
 					},
 				},
 			})
 
+			vim.lsp.config("rust_alalyzer", {})
+
 			vim.lsp.config("terraformls", {})
 
-            vim.lsp.enable("lua_ls")
-            vim.lsp.enable("clangd")
-            vim.lsp.enable("pylsp")
-            vim.lsp.enable("cmake")
-            vim.lsp.enable("terraformls")
+			vim.lsp.enable("lua_ls")
+			vim.lsp.enable("clangd")
+			vim.lsp.enable("pyright")
+			vim.lsp.enable("cmake")
+			vim.lsp.enable("terraformls")
+			vim.lsp.enable("rust_alalyzer")
+			vim.lsp.set_log_level("debug")
 
 			-- Customize diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -134,8 +137,6 @@ return {
 			-- Global mappings.
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 			vim.keymap.set("n", "<Space>ee", vim.diagnostic.open_float)
-			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-			vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 			vim.keymap.set("n", "<Space>qs", vim.diagnostic.setloclist)
 
 			-- Use LspAttach autocommand to only map the following keys
@@ -190,7 +191,7 @@ return {
 				callback = function()
 					vim.diagnostic.open_float(nil, {
 						scope = "cursor",
-						focusable = false,
+						focusable = true,
 						close_events = { "CursorMoved", "BufHidden", "InsertEnter" },
 					})
 				end,

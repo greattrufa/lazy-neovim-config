@@ -75,10 +75,8 @@ return {
 					},
 				},
 			},
-  
   -- stylua: ignore
   icons = {
-    ---@type trouble.Indent.symbols
     indent = {
       top           = "│ ",
       middle        = "├╴",
@@ -120,7 +118,7 @@ return {
       Variable      = "󰀫 ",
     },
   },
-	})
+		})
 		-- vim.keymap.set("n", "<Space>xx", ":Trouble<cr>", { silent = true, noremap = true })
 	end,
 }

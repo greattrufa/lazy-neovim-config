@@ -149,7 +149,6 @@ return {
 			--- The function is called for code actions *after* any `ignore` or `action_kinds`
 			--- options are applied.
 			--- The function should return true to keep the code action, false otherwise.
-			---@type (fun(client_name:string, result:lsp.CodeAction|lsp.Command):boolean)|nil
 			filter = nil,
 		})
 	end,

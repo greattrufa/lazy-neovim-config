@@ -7,7 +7,9 @@ return {
 	tag = "0.1.6",
 	config = function()
 		require("telescope").load_extension("notify")
+		require("telescope").load_extension("noice")
 		require("telescope").load_extension("flutter")
+		require("telescope").load_extension("fidget")
 		local builtin = require("telescope.builtin")
 
 		-- Make defaults local
@@ -30,6 +32,7 @@ return {
 				"dist/",
 				"target/",
 				"vendor/",
+				"media",
 				-- Python cache
 				"__pycache__/",
 				-- Ignore Images
@@ -79,6 +82,7 @@ return {
 					"--glob=!packages/*",
 					"--glob=!bin/*",
 					"--glob=!vendor/*",
+					"--glob=!media/*",
 				},
 			},
 			live_grep = {
@@ -101,6 +105,7 @@ return {
 						"--glob=!packages/*",
 						"--glob=!bin/*",
 						"--glob=!vendor/*",
+						"--glob=!media/*",
 					}
 				end,
 			},

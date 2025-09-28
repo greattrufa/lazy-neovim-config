@@ -27,15 +27,15 @@ return {
 
 		map("n", "<Space>v", function()
 			ToggleFloatermLayout("vertical")
-		end, opts, { desc = "Toggle vertical Floaterm" })
+		end, opts) -- Toggle vertical Floaterm
 		map("n", "<Space>h", function()
 			ToggleFloatermLayout("horizontal")
-		end, opts, { desc = "Toggle horizontal Floaterm" })
+		end, opts) -- Toggle horizontal Floaterm
 		map("n", "<C-p>", function()
 			ToggleFloatermLayout("float")
-		end, opts, { desc = "Toggle floating Floaterm" })
+		end, opts) -- Toggle floating Floaterm
 
 		-- Exit terminal mode
-		map("t", "<Esc>", [[<C-\><C-n>]], opts, { desc = "Exit terminal mode" })
+		map("t", "<Esc>", [[<C-\><C-n>]], opts) -- Exit terminal mode
 	end,
 }

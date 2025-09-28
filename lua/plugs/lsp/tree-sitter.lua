@@ -17,11 +17,9 @@ return {
 				"cpp",
 				"json",
 				"lua",
-				"make",
 				"python",
 				"rust",
 				"toml",
-				"vim",
 			},
 			-- Install parsers synchronously (only applied to `ensure_installed`)
 			sync_install = false,
