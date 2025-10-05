@@ -19,6 +19,9 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
 			if vim.fn.has("win32") == 1 then
 				vim.env.PATH = vim.env.PATH .. ";" .. vim.fn.stdpath("data") .. "/mason/bin"
 
@@ -98,17 +101,18 @@ return {
 			vim.lsp.config("cmake", {})
 
 			vim.lsp.config("pyright", {
+				capabilities = capabilities,
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
-				root_markers = { ".git", "pyproject.toml", "requirements.txt", "setup.py", "main.py", ".gitignore" }, -- Updated markers
+				root_markers = { ".git", "pyproject.toml", "requirements.txt", "setup.py", "main.py", ".gitignore" },
 				settings = {
 					python = {
 						analysis = {
-							typeCheckingMode = "basic", -- Controls strictness: "off", "basic", "strict"
-							diagnosticMode = "workspace", -- Crucial for speed :cite[2]:cite[5]
-							useLibraryCodeForTypes = true, -- Good for better type info on untyped libs
+							typeCheckingMode = "basic",
+							diagnosticMode = "workspace",
+							useLibraryCodeForTypes = true,
 							autoSearchPaths = true,
-							autoImportCompletions = true, -- Offers auto-import suggestions :cite[2]
+							autoImportCompletions = true,
 							-- extraPaths = {}, -- Add if you have custom module paths
 						},
 					},

@@ -61,10 +61,10 @@ return {
 				local line_count = vim.api.nvim_buf_line_count(buf)
 
 				if line_count > 5000 then
-					vim.notify(
-						"Large file detected (" .. line_count .. " lines), disabling Tree-sitter",
-						vim.log.levels.WARN
-					)
+					-- vim.notify(
+					-- 	"Large file detected (" .. line_count .. " lines), disabling Tree-sitter",
+					-- 	vim.log.levels.WARN
+					-- )
 					vim.treesitter.stop()
 				end
 			end,
