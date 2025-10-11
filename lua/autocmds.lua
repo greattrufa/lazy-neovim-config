@@ -106,3 +106,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end
 	end,
 })
+
+-- Auto commands for C++ specific behavior
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+	pattern = "*.cpp,*.hpp,*.cc,*.hh,*.cxx,*.hxx,*.c,*.h",
+	callback = function()
+		-- Refresh folds when entering C++ files
+		vim.cmd("normal! zx")
+	end,
+})

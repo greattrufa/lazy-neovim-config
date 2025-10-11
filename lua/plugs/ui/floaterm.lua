@@ -2,22 +2,40 @@ return {
 	"voldikss/vim-floaterm",
 	config = function()
 		function ToggleFloatermLayout(layout)
+			-- Create a local config table
+			local config = {}
+
 			if layout == "vertical" then
-				vim.g.floaterm_width = 0.4
-				vim.g.floaterm_height = 1.0
-				vim.g.floaterm_wintype = "vsplit"
-				vim.g.floaterm_position = "bottom"
+				config.floaterm_width = 0.4
+				config.floaterm_height = 1.0
+				config.floaterm_wintype = "vsplit"
+				config.floaterm_position = "bottom"
 			elseif layout == "horizontal" then
-				vim.g.floaterm_width = 1.0
-				vim.g.floaterm_height = 0.4
-				vim.g.floaterm_wintype = "split"
-				vim.g.floaterm_position = "right"
+				config.floaterm_width = 1.0
+				config.floaterm_height = 0.4
+				config.floaterm_wintype = "split"
+				config.floaterm_position = "right"
 			else
-				vim.g.floaterm_width = 0.8
-				vim.g.floaterm_height = 0.8
-				vim.g.floaterm_wintype = "float"
-				vim.g.floaterm_position = "center"
+				config.floaterm_width = 0.9
+				config.floaterm_height = 0.9
+				config.floaterm_wintype = "float"
+				config.floaterm_position = "center"
 			end
+
+			-- ---@class FloatermConfig
+			-- ---@field floaterm_width number
+			-- ---@field floaterm_height number
+			-- ---@field floaterm_wintype string
+			-- ---@field floaterm_position string
+			--
+			-- ---@type FloatermConfig
+			-- vim.g = vim.g
+
+			-- Assign the entire table to vim.g in one go
+			vim.g.floaterm_width = config.floaterm_width
+			vim.g.floaterm_height = config.floaterm_height
+			vim.g.floaterm_wintype = config.floaterm_wintype
+			vim.g.floaterm_position = config.floaterm_position
 
 			vim.cmd("FloatermToggle")
 		end

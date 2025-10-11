@@ -68,6 +68,8 @@ return {
 						diagnostics = {
 							globals = {
 								"vim",
+								"vim.g",
+								"vim.o",
 							},
 						},
 						telemetry = { enable = false },
@@ -176,7 +178,7 @@ return {
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 					vim.keymap.set("n", "<Space>fa", vim.lsp.buf.add_workspace_folder, opts)
-					vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
+					vim.keymap.set("n", "<Space>d", vim.lsp.buf.type_definition, opts)
 					vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
 					vim.keymap.set({ "n", "v" }, "<Space>ca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
@@ -189,9 +191,14 @@ return {
 				end,
 			})
 
+			-- Activate neovim lightbulb on hold
+			vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
+
 			-- Show diagnostics on cursor hold
 			vim.api.nvim_create_autocmd("CursorHold", {
 				pattern = "*",
+				vim.lsp.definition,
+
 				callback = function()
 					vim.diagnostic.open_float(nil, {
 						scope = "cursor",

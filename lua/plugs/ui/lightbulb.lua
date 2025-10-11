@@ -77,7 +77,7 @@ return {
 
 			-- 3. Floating window.
 			float = {
-				enabled = false,
+				enabled = true,
 				-- Text to show in the floating window.
 				text = "💡",
 				lens_text = "🔎",
@@ -95,7 +95,7 @@ return {
 			-- When enabled, will allow using |NvimLightbulb.get_status_text|
 			-- to retrieve the configured text.
 			status_text = {
-				enabled = false,
+				enabled = true,
 				-- Text to set if a lightbulb is available.
 				text = "💡",
 				lens_text = "🔎",
@@ -105,14 +105,14 @@ return {
 
 			-- 5. Number column.
 			number = {
-				enabled = false,
+				enabled = true,
 				-- Highlight group to highlight the number column if there is a lightbulb.
 				hl = "LightBulbNumber",
 			},
 
 			-- 6. Content line.
 			line = {
-				enabled = false,
+				enabled = true,
 				-- Highlight group to highlight the line if there is a lightbulb.
 				hl = "LightBulbLine",
 			},
@@ -123,7 +123,7 @@ return {
 			-- Only works if configured during NvimLightbulb.setup
 			autocmd = {
 				-- Whether or not to enable autocmd creation.
-				enabled = false,
+				enabled = true,
 				-- See |updatetime|.
 				-- Set to a negative value to avoid setting the updatetime.
 				updatetime = 200,
@@ -152,4 +152,6 @@ return {
 			filter = nil,
 		})
 	end,
+
+	-- require("nvim-lightbulb").update_lightbulb(),
 }
