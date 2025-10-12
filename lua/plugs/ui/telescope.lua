@@ -8,7 +8,6 @@ return {
 	config = function()
 		require("telescope").load_extension("notify")
 		require("telescope").load_extension("noice")
-		require("telescope").load_extension("flutter")
 		require("telescope").load_extension("fidget")
 		local builtin = require("telescope.builtin")
 

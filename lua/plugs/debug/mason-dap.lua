@@ -8,7 +8,6 @@ return {
 				-- For vscode debug options compatibility
 				"cpptools",
 				"cppdbg",
-				"dart-debug-adapter",
 			},
 			automatic_installation = true,
 			handlers = {

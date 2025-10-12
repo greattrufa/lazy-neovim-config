@@ -20,20 +20,6 @@ return {
 			preset = "active_wins_at_end",
 			nerdfont = true,
 
-			-- tabline = {
-			-- 	-- Set the highlight groups for the tab text
-			-- 	highlights = {
-			-- 		tab = {
-			-- 			fg = "#FFFFFF", -- Change this to your desired text color
-			-- 			bg = "#1E1E1E", -- Change this to your desired background color
-			-- 		},
-			-- 		tab_selected = {
-			-- 			fg = "#00FF00", -- Change this to your desired selected tab text color
-			-- 			bg = "#000000", -- Change this to your desired selected tab background color
-			-- 		},
-			-- 	},
-			-- },
-
 			line = function(line)
 				return {
 					{
@@ -76,18 +62,31 @@ return {
 
 		vim.api.nvim_create_autocmd("VimEnter", {
 			callback = function()
-				if #vim.fn.argv() > 1 then
-					for i = 2, #vim.fn.argv() do
-						vim.cmd("tabedit " .. vim.fn.argv()[i])
+				-- Use pcall to catch errors
+				local success, err = pcall(function()
+					if #vim.fn.argv() > 1 then
+						for i = 2, #vim.fn.argv() do
+							vim.cmd("tabedit " .. vim.fn.argv()[i])
+						end
 					end
+				end)
+				if not success then
+					vim.notify("Error in Tabby VimEnter: " .. err, vim.log.levels.WARN)
 				end
 			end,
 		})
 
 		vim.api.nvim_create_autocmd("BufAdd", {
 			callback = function()
-				if vim.bo.buftype == "" then
-					vim.cmd("tabedit %")
+				local success, err = pcall(function()
+					if vim.bo.buftype == "" then
+						vim.cmd("tabedit %")
+					end
+				end)
+				if not success then
+					-- vim.notify("Error in Tabby BufAdd: " .. err, vim.log.levels.WARN)
+					-- ... Hear me out this is not going to stay like this probably
+					return
 				end
 			end,
 		})

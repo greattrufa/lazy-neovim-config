@@ -35,7 +35,7 @@ return {
 				virtual_text = true, -- Enable inline text
 				signs = true,
 				underline = true,
-				update_in_insert = false,
+				update_in_insert = true,
 				severity_sort = true,
 
 				float = {
