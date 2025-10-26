@@ -140,19 +140,6 @@ return {
 			end
 		end, {}),
 
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			pattern = "xmake.lua",
-			callback = function()
-				vim.fn.jobstart("xmake project -k compile_commands", {
-					on_exit = function(_, code)
-						if code == 0 then
-							print("Updated compile_commands.json")
-						end
-					end,
-				})
-			end,
-		}),
-
 		-- Enable development mode
 		dev_debug = true,
 

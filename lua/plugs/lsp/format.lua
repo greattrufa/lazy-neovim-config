@@ -10,6 +10,7 @@ return {
 				"prettier",
 				"clang-format",
 				"stylua",
+				"talpo",
 				"black",
 			},
 		})

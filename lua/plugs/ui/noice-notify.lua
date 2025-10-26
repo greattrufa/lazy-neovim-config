@@ -50,11 +50,11 @@ return {
 		},
 		config = function()
 			require("noice").setup({
-				views = {
-					mini = {
-						position = { col = -1, row = -1 }, -- Bottom right corner
-					},
-				},
+				-- views = {
+				-- 	mini = {
+				-- 		position = { col = -1, row = -1 }, -- Bottom right corner
+				-- 	},
+				-- },
 				messages = {
 					view = "mini", -- Use the mini view for messages
 				},
@@ -73,12 +73,12 @@ return {
 				signature = {
 					enabled = true,
 					-- Optional: auto-open signature help when typing triggers it
-					-- auto_open = {
-					--   enabled = true,
-					--   trigger = true, -- Automatically show signature help as you type
-					--   luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-					--   throttle = 50, -- Debounce lsp signature help request by 50ms
-					-- },
+					auto_open = {
+						enabled = true,
+						trigger = true, -- Automatically show signature help as you type
+						luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
+						throttle = 50, -- Debounce lsp signature help request by 50ms
+					},
 				},
 				-- you can enable a preset for easier configuration
 				presets = {

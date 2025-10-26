@@ -125,12 +125,16 @@ return {
 
 			vim.lsp.config("terraformls", {})
 
+			vim.lsp.config("denols", {})
+
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("clangd")
 			vim.lsp.enable("pyright")
 			vim.lsp.enable("cmake")
-			vim.lsp.enable("terraformls")
 			vim.lsp.enable("rust_alalyzer")
+			vim.lsp.enable("terraformls")
+			vim.lsp.enable("denols")
+
 			vim.lsp.set_log_level("debug")
 
 			-- Customize diagnostic signs

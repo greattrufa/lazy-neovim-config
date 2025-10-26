@@ -40,8 +40,8 @@ BasedOnStyle: WebKit
 Language: Cpp
 Standard: c++20
 UseTab: Never
-TabWidth: 2
-IndentWidth: 2
+TabWidth: 4
+IndentWidth: 4
 ColumnLimit: 200
 
 # Brace breaking style - allows more code to fit vertically.
@@ -104,6 +104,19 @@ vim.api.nvim_create_autocmd("BufEnter", {
 			create_clang_format()
 			vim.b.clang_format_created = true
 		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "xmake.lua",
+	callback = function()
+		vim.fn.jobstart("xmake project -k compile_commands", {
+			on_exit = function(_, code)
+				if code == 0 then
+					print("Updated compile_commands.json")
+				end
+			end,
+		})
 	end,
 })
 
