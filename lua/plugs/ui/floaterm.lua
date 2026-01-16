@@ -36,6 +36,7 @@ return {
 			vim.g.floaterm_height = config.floaterm_height
 			vim.g.floaterm_wintype = config.floaterm_wintype
 			vim.g.floaterm_position = config.floaterm_position
+			vim.g.floaterm_shell = "powershell.exe -NoLogo"
 
 			vim.cmd("FloatermToggle")
 		end
