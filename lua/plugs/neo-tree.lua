@@ -43,6 +43,7 @@ return {
 								use_image_nvim = true,
 							},
 						},
+						["<cr>"] = "open_tabnew",
 					},
 				},
 			})

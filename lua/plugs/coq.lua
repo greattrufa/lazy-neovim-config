@@ -1,14 +1,5 @@
 return {
 	{
-		"ms-jpq/coq_nvim",
-		branch = "coq",
-		config = function()
-			-- Coq configuration
-			vim.g.coq_settings = { auto_start = "shut-up" }
-		end,
-	},
-	-- LSP configuration
-	{
 		"neovim/nvim-lspconfig",
 		config = function()
 			local lspconfig = require("lspconfig")

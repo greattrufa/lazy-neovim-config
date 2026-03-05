@@ -1,6 +1,6 @@
 return {
 	"rmagatti/auto-session",
-	lazy = false,
+	lazy = true,
 	keys = {
 		-- Will use Telescope if installed or a vim.ui.select picker otherwise
 		{ "<Space>wr", "<cmd>AutoSession search<CR>", desc = "Session search" },
@@ -10,12 +10,12 @@ return {
 	},
 
 	---enables autocomplete for opts
-	---@module "auto-session"
-	---@type AutoSession.Config
+	-- -@module "auto-session"
+	-- -@type AutoSession.Config
 	opts = {
 		-- The following are already the default values, no need to provide them if these are already the settings you want.
 		session_lens = {
-			picker = "telescope", -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also manually choose one. Falls back to vim.ui.select
+			picker = "fzf", -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also manually choose one. Falls back to vim.ui.select
 			-- mappings = {
 			-- 	-- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
 			-- 	delete_session = { "i", "<C-d>" },
@@ -56,7 +56,7 @@ return {
 			auto_save = true, -- Enables/disables auto saving session on exit
 			auto_restore = true, -- Enables/disables auto restoring session on start
 			auto_create = false, -- Enables/disables auto creating new session files. Can be a function that returns true if a new session file should be allowed
-			auto_restore_last_session = false, -- On startup, loads the last saved session if session for cwd does not exist
+			auto_restore_last_session = true, -- On startup, loads the last saved session if session for cwd does not exist
 			cwd_change_handling = false, -- Automatically save/restore sessions when changing directories
 			single_session_mode = false, -- Enable single session mode to keep all work in one session regardless of cwd changes. When enabled, prevents creation of separate sessions for different directories and maintains one unified session. Does not work with cwd_change_handling
 			load_on_setup = true,

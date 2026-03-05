@@ -12,7 +12,6 @@ o.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 o.swapfile = false -- Don't use swapfile
 o.completeopt = "menuone,noinsert,noselect" -- Autocomplete options
 o.encoding = "UTF-8" -- Don't know what this is
-o.syntax = on -- Syntax highlight by default
 o.ma = true
 o.relativenumber = true
 -- o.sessionoptions = "curdir,folds,globals,help,tabpages,terminal,winsize"
@@ -162,3 +161,5 @@ vim.opt.wildignore:append({
 -- Improve file completion
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildignorecase = true
+
+vim.g.mapleader = " "

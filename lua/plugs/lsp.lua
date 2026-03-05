@@ -4,13 +4,13 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"clangd",
-					"glsl_analyzer",
-					"cmake",
-					"lua_ls",
-					"rust_analyzer",
+					"clangd", -- C/C++
+					"rust_analyzer", -- Rust
+					"glsl_analyzer", -- GLSL (opengl shader language)
+					"lua_ls", -- Lua
+					"pyright", -- Python
+
 					"typos_lsp",
-					"pyright",
 				},
 				automatic_installation = true,
 			})
@@ -52,6 +52,11 @@ return {
 				},
 			})
 
+			vim.lsp.config("rust_analyzer", {
+				filetypes = { "rust", ".rs" },
+				root_markers = { ".git", "Cargo.toml", "Cargo.toml", ".gitignore" },
+			})
+
 			vim.lsp.config("lua_ls", {
 				root_markers = { ".git", ".luarc.json", ".luarc.jsonc", ".stylua.toml" },
 				settings = {
@@ -83,15 +88,20 @@ return {
 					"--background-index",
 					"--clang-tidy",
 					"--header-insertion=never",
-					"--query-driver=clang*,gcc*,gcc*,cl.exe",
+					"--query-driver=clang*,clang++*,gcc*,g++*,cl.exe",
 					"--compile-commands-dir=build",
 					"--pch-storage=memory",
 					"--all-scopes-completion",
 					"--completion-style=detailed",
 					"--offset-encoding=utf-8",
+					"--enable-config",
+					"--log=verbose",
 				},
 				init_options = {
+					usePlaceholders = true,
+					completeUnimported = true,
 					clangdFileStatus = true,
+					fallbackFlags = { "-std=c++23" },
 				},
 				filetypes = { "c", "cpp", "objc", "objcpp" },
 				root_markers = { "compile_commands.json", "CMakeLists.txt", "xmake.lua", ".git" },
@@ -100,7 +110,6 @@ return {
 					offsetEncoding = { "utf-8" },
 				},
 			})
-			vim.lsp.config("cmake", {})
 
 			vim.lsp.config("pyright", {
 				capabilities = capabilities,
@@ -109,6 +118,8 @@ return {
 				root_markers = { ".git", "pyproject.toml", "requirements.txt", "setup.py", "main.py", ".gitignore" },
 				settings = {
 					python = {
+						venvPath = ".",
+						venv = ".venv",
 						analysis = {
 							typeCheckingMode = "basic",
 							diagnosticMode = "workspace",
@@ -121,19 +132,13 @@ return {
 				},
 			})
 
-			vim.lsp.config("rust_alalyzer", {})
-
 			vim.lsp.config("terraformls", {})
 
-			vim.lsp.config("denols", {})
-
+			vim.lsp.enable("rust_analyzer")
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("clangd")
 			vim.lsp.enable("pyright")
-			vim.lsp.enable("cmake")
-			vim.lsp.enable("rust_alalyzer")
 			vim.lsp.enable("terraformls")
-			vim.lsp.enable("denols")
 
 			vim.lsp.set_log_level("debug")
 
@@ -181,17 +186,14 @@ return {
 					vim.keymap.set("n", "gf", vim.lsp.buf.hover, opts)
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-					vim.keymap.set("n", "<Space>fa", vim.lsp.buf.add_workspace_folder, opts)
-					vim.keymap.set("n", "<Space>d", vim.lsp.buf.type_definition, opts)
-					vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
-					vim.keymap.set({ "n", "v" }, "<Space>ca", vim.lsp.buf.code_action, opts)
+					vim.keymap.set("n", "<Leader>fa", vim.lsp.buf.add_workspace_folder, opts)
+					vim.keymap.set("n", "<Leader>d", vim.lsp.buf.type_definition, opts)
+					vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
 					-- Goto definition in new window
-					vim.keymap.set("n", "<Space>wg", ":belowright split<CR>:lua vim.lsp.buf.definition()<CR>", opts)
-
-					-- use telescope to search for object references
-					vim.keymap.set("n", "gi", require("telescope.builtin").lsp_references, opts)
+					vim.keymap.set("n", "<Leader>wg", ":belowright split<CR>:lua vim.lsp.buf.definition()<CR>", opts)
 				end,
 			})
 

@@ -27,8 +27,8 @@ return {
 					text = {
 						function()
 							local relnum = vim.v.lnum - vim.fn.line(".")
-                            if relnum == 0 then
-                                return string.format("-1-")
+							if relnum == 0 then
+								return string.format("-1-")
 							elseif relnum < 0 then
 								return string.format("%2d ", math.abs(relnum - 1))
 							elseif relnum > 0 then

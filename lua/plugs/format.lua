@@ -16,7 +16,7 @@ return {
 		})
 
 		vim.keymap.set({ "n", "v" }, "<Space>fm", function()
-			conform.format({
+			require("conform").format({
 				lsp_fallback = true,
 				async = false,
 				timeout_ms = 500,

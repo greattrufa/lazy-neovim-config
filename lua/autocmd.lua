@@ -38,7 +38,7 @@ BasedOnStyle: WebKit
 
 # Essential Language and Standard Settings
 Language: Cpp
-Standard: c++20
+Standard: c++26
 UseTab: Never
 TabWidth: 4
 IndentWidth: 4
@@ -74,7 +74,7 @@ PointerAlignment: Left
 NamespaceIndentation: All
 ReflowComments: true
 
-# Includes sorting - CRITICAL: Be aware of potential performance implications:cite[3]
+# Includes sorting - CRITICAL: Be aware of potential performance implications
 SortIncludes: false
         ]]
 
@@ -126,5 +126,84 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 	callback = function()
 		-- Refresh folds when entering C++ files
 		vim.cmd("normal! zx")
+	end,
+})
+
+-- Inform pyright of the .venv environment
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*.py",
+	callback = function()
+		local venv = vim.fs.find(".venv", { upward = true, type = "directory" })[1]
+		if not venv then
+			return
+		end
+
+		local project_dir = vim.fn.fnamemodify(venv, ":h")
+		local toml_path = project_dir .. "/pyproject.toml"
+		local config_line = '[tool.pyright]\nvenvPath = "."\nvenv = ".venv"'
+
+		local file = io.open(toml_path, "r")
+		if not file then
+			return
+		end
+
+		local content = file:read("*a")
+		file:close()
+
+		if content:find("%[tool%.pyright%]") then
+			return
+		end
+
+		file = io.open(toml_path, "a")
+		if file then
+			if not content:match("\n$") then
+				file:write("\n")
+			end
+			file:write(config_line .. "\n")
+			file:close()
+		end
+	end,
+})
+
+-- Automatically switch to the .venv environment if there is one in the root
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "floaterm",
+	callback = function()
+		local venv = vim.fs.find(".venv", { upward = true, path = vim.api.nvim_buf_get_name(0) })[1]
+		if not venv then
+			return
+		end
+
+		local venvScript = vim.fs.joinpath(vim.fn.fnamemodify(venv, ":p"), "Scripts", "activate.ps1")
+		if vim.fn.filereadable(venvScript) ~= 1 then
+			return
+		end
+
+		vim.defer_fn(function()
+			pcall(vim.cmd, "FloatermSend " .. venvScript)
+		end, 10)
+	end,
+})
+
+-- Autoclose empty tabs
+vim.api.nvim_create_autocmd("TabNew", {
+	callback = function()
+		local buffers = vim.api.nvim_list_bufs()
+		for _, bufnr in ipairs(buffers) do
+			if
+				vim.api.nvim_buf_is_loaded(bufnr)
+				and vim.api.nvim_buf_get_name(bufnr) == ""
+				and vim.bo[bufnr].buftype == ""
+			then
+				local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+				local total_chars = 0
+				for _, line in ipairs(lines) do
+					total_chars = total_chars + #line
+				end
+				if total_chars == 0 then
+					vim.api.nvim_buf_delete(bufnr, { force = true })
+				end
+			end
+		end
 	end,
 })
