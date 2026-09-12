@@ -26,9 +26,9 @@ return {
 				vim.env.PATH = vim.env.PATH .. ";" .. vim.fn.stdpath("data") .. "/mason/bin"
 
 				-- Normalize paths for LSP
-				local function normalize_path(path)
-					return path:gsub("\\", "/"):lower()
-				end
+				-- local function normalize_path(path)
+				-- 	return path:gsub("\\", "/"):lower()
+				-- end
 			end
 
 			vim.diagnostic.config({
@@ -89,7 +89,7 @@ return {
 					"--clang-tidy",
 					"--header-insertion=never",
 					"--query-driver=clang*,clang++*,gcc*,g++*,cl.exe",
-					"--compile-commands-dir=build",
+					"--compile-commands-dir=build,.",
 					"--pch-storage=memory",
 					"--all-scopes-completion",
 					"--completion-style=detailed",
@@ -140,7 +140,7 @@ return {
 			vim.lsp.enable("pyright")
 			vim.lsp.enable("terraformls")
 
-			vim.lsp.set_log_level("debug")
+			vim.lsp.log.set_level("debug")
 
 			-- Customize diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -196,9 +196,6 @@ return {
 					vim.keymap.set("n", "<Leader>wg", ":belowright split<CR>:lua vim.lsp.buf.definition()<CR>", opts)
 				end,
 			})
-
-			-- Activate neovim lightbulb on hold
-			vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
 
 			-- Show diagnostics on cursor hold
 			vim.api.nvim_create_autocmd("CursorHold", {

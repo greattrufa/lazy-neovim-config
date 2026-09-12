@@ -8,7 +8,7 @@ local o = vim.opt
 -- General
 -----------------------------------------------------------
 o.mouse = "a" -- Enable mouse support
-o.clipboard = "unnamedplus" -- Copy/paste to system clipboard
+-- o.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 o.swapfile = false -- Don't use swapfile
 o.completeopt = "menuone,noinsert,noselect" -- Autocomplete options
 o.encoding = "UTF-8" -- Don't know what this is
@@ -23,6 +23,11 @@ o.splitkeep = "screen"
 o.ignorecase = true
 o.smartcase = true
 opt.fillchars = { eob = " " }
+
+global.clipboard = "osc52"
+-- global.gui_font_default_size = 15
+-- global.gui_font_size = vim.g.gui_font_default_size
+-- global.gui_font_face = "Fira Code Retina"
 
 -----------------------------------------------------------
 -- Neovim UI
@@ -39,14 +44,13 @@ o.linebreak = true -- Wrap on word boundary
 o.termguicolors = true -- Enable 24-bit RGB colors
 o.laststatus = 3 -- Set global statusline
 o.cursorline = true -- Sets the line cursor
-o.termguicolors = true
 
 -----------------------------------------------------------
 -- Tabs, indent
 -----------------------------------------------------------
 o.expandtab = true -- Use spaces instead of tabs
-o.shiftwidth = 4 -- Shift 4 spaces when tab
-o.tabstop = 4 -- 1 tab == 4 spaces
+o.shiftwidth = 2 -- Shift 4 spaces when tab
+o.tabstop = 2 -- 1 tab == 4 spaces
 o.smartindent = true -- Autoindent new lines
 o.showtabline = 2 -- Show the tapline
 o.winminwidth = 1

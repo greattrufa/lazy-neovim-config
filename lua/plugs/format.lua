@@ -44,6 +44,9 @@ return {
 
 			formatters = {
 				injected = { options = { ignore_errors = true } },
+				stylua = {
+					prepend_args = { "--respect-ignores" },
+				},
 			},
 		})
 	end,
